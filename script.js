@@ -3,31 +3,39 @@
 const Game = (() => {
     const _boardSize = 9
 
-    // Set Players 'Markers' using 0 and 1
-    let _markerOne = 0
-
-    const Player = (name, marker) => {
-        const getMarker = () => {
-            if (!_markerOne) {
-                _markerOne ++
-                return marker = 0
-            } else {
-                return marker = 1
-            }
-        }
-        marker = getMarker()
+    const Player = (name, marker, isTurn) => {
         const placeMarker = () => {
-            return marker
+            if (marker === 0) {
+                return "X"
+            } else {
+                return "O"
+            }
         }
         return {
             name,
             marker,
+            isTurn,
             placeMarker
         }
     }
 
-    let playerOne = Player("Jimmy")
-    let playerTwo = Player("John")
+    let playerOne = Player("Jimmy", 0, false)
+    let playerTwo = Player("John", 1, false)
+
+
+
+    const winCondition = (board) => {
+        const win = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ]
+    }
 
     const gameBoard = (() => {
         // Init Board Array
@@ -39,7 +47,6 @@ const Game = (() => {
         // Creates Board in HTML
         const createBoard = () => {
             let boardElement = document.getElementById("board")
-
             for (let i = 1; i <= _boardSize; i++) {
                 let sqElement = document.createElement("div")
                 boardElement.appendChild(sqElement).classList.add("square")
@@ -51,35 +58,35 @@ const Game = (() => {
             // Node list targeting HTML board elements
             const squareList = document.querySelectorAll(".square")
             squareList.forEach((element) => {
-                element.addEventListener("click", (e) => updateArray(e.target))
+                element.addEventListener("click", (e) => updateHTML(e.target))
             })
 
-            // Handle placing marker on board
-            let _changeTurn = false
+            // Handle updating Array at given index
             const _logIndex = (index) => {
-                let marker
-                if (!_changeTurn) {
-                    marker = playerOne.placeMarker()
-                    _changeTurn = true
+                if (playerOne.isTurn) {
+                    playerOne.isTurn = false
+                    updateArray(index, playerOne.marker)
+                    return playerOne.placeMarker()
                 } else {
-                   marker = playerTwo.placeMarker()
-                    _changeTurn = false
+                    playerTwo.placeMarker()
+                    playerOne.isTurn = true
+                    updateArray(index, playerTwo.marker)
+                    return playerTwo.placeMarker()
                 }
-                _boardState[index -1] = marker
-                return marker
             }
 
-            const updateArray = (e) => {
+            function updateArray(index, marker) {
+               _boardState[index -1] = marker
+                winCondition(_boardState)
+            }
+
+            const updateHTML = (e) => {
                 let index = parseInt(e.getAttribute("data"))
                 e.textContent = _logIndex(index)
-            }
-            return {
-                updateArray
             }
         }
 
     return {
-            initBoardState,
             createBoard,
            updateBoard,
     }
