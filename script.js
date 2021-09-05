@@ -86,6 +86,7 @@ const Game = (() => {
             squareList.forEach((element) => {
                 element.addEventListener("click", (e) => updateHTML(e.target))
                 element.addEventListener("click",()  => winCondition(_boardState))
+                element.addEventListener("click", (e) => setClicked(e.target))
             })
 
             // Handle sending index to helpers
@@ -106,8 +107,16 @@ const Game = (() => {
             }
 
             const updateHTML = (e) => {
-                let index = parseInt(e.getAttribute("data"))
-                e.textContent = _logIndex(index)
+                if (e.getAttribute("clicked") !== "1") {
+                    let index = parseInt(e.getAttribute("data"))
+                    e.textContent = _logIndex(index)
+                } else {
+                    console.log("You already clicked this square")
+                }
+            }
+
+            const setClicked = (e) => {
+                e.setAttribute("clicked", 1)
             }
         }
 
