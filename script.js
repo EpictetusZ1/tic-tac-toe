@@ -2,7 +2,8 @@
 
 const Game = (() => {
 
-    const Player = (name, marker, isTurn) => {
+    const Player = (name, marker, isTurn, wins) => {
+        // TODO: Make SVG for these bad boys
         const placeMarker = () => {
             if (marker === 0) {
                 return "X"
@@ -14,15 +15,24 @@ const Game = (() => {
             name,
             marker,
             isTurn,
+            wins,
             placeMarker
         }
     }
 
-    let playerOne = Player("Jimmy", 0, false)
-    let playerTwo = Player("John", 1, false)
+    let playerOne = Player("Jimmy", 0, false, 0)
+    let playerTwo = Player("John", 1, false,0)
+
+    let _playerOneWin = false
+    let _playerTwoWin = false
+
+    const showWin = (player) => {
+        player.wins++
+        console.log(player)
+    }
 
     const winCondition = (board) => {
-        const win = [
+        const winConditions = [
             [0, 1, 2],
             [3, 4, 5],
             [6, 7, 8],
@@ -32,17 +42,24 @@ const Game = (() => {
             [0, 4, 8],
             [2, 4, 6]
         ]
-        for (let i = 0; i < win.length; i++) {
-            let condition = win[i]
-            for (let x = 0; x <= condition.length; x++) {
-                if (board[condition[0]] === 0 && board[condition[1]] === 0 && board[condition[2]] === 0) {
-                    console.log("ONE PLAYER WINS")
-                } else if (board[condition[0]] === 1 && board[condition[1]] === 1 && board[condition[2]] === 1) {
-                    console.log("PLAYER TWO WINS")
+        for (let i = 0; i < winConditions.length; i++) {
+            let cdn = winConditions[i]
+            let c0 = cdn[0]
+            let c1 = cdn[1]
+            let c2 = cdn[2]
+            for (let x = 0; x < cdn.length; x++) {
+                if (board[c0] === 0 && board[c1] === 0 && board[c2] === 0) {
+                    _playerOneWin = true
+                    return showWin(playerOne)
+                } else if (board[c0] === 1 && board[c1] === 1 && board[c2] === 1) {
+                    _playerTwoWin = true
+                    return showWin(playerTwo)
                 }
             }
         }
     }
+
+
 
     const gameBoard = (() => {
         const _boardSize = 9
@@ -65,6 +82,7 @@ const Game = (() => {
         const updateBoard = () => {
             // Node list targeting HTML board elements
             const squareList = document.querySelectorAll(".square")
+
             squareList.forEach((element) => {
                 element.addEventListener("click", (e) => updateHTML(e.target))
                 element.addEventListener("click",()  => winCondition(_boardState))
