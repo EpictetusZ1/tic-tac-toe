@@ -1,37 +1,7 @@
 "use strict"
 
 const Game = (() => {
-
     const _boardSize = 9
-
-    // Generates first instance of board Array
-    const initBoardState = new Array(_boardSize).fill(0)
-
-    // Creates Board
-    const createBoard = () => {
-        let boardElement = document.getElementById("board")
-
-        for (let i = 1; i <= _boardSize; i++) {
-            let sqElement = document.createElement("div")
-            boardElement.appendChild(sqElement).classList.add("square")
-            sqElement.setAttribute("data", `${i}`)
-
-            // Updates Board
-            sqElement.addEventListener("click", (e) => placeMarker(e))
-        }
-    }
-
-    // Update board in HTML
-    let _turnController = false
-    const placeMarker = (e) => {
-        if (!_turnController) {
-            e.target.textContent = "X"
-            _turnController = true
-        } else if (_turnController) {
-            e.target.textContent = "0"
-            _turnController = false
-        }
-    }
 
     // Set Players 'Markers' using 0 and 1
     let _markerOne = 0
@@ -46,23 +16,80 @@ const Game = (() => {
             }
         }
         marker = getMarker()
+        const placeMarker = () => {
+            return marker
+        }
         return {
             name,
-            marker
+            marker,
+            placeMarker
         }
     }
 
+    let playerOne = Player("Jimmy")
+    let playerTwo = Player("John")
+
+    const gameBoard = (() => {
+        // Init Board Array
+        const initBoardState = new Array(_boardSize).fill(undefined)
+
+        // Arr to play game on
+        let _boardState = initBoardState
+
+        // Creates Board in HTML
+        const createBoard = () => {
+            let boardElement = document.getElementById("board")
+
+            for (let i = 1; i <= _boardSize; i++) {
+                let sqElement = document.createElement("div")
+                boardElement.appendChild(sqElement).classList.add("square")
+                sqElement.setAttribute("data", `${i}`)
+            }
+        }
+
+        const updateBoard = () => {
+            // Node list targeting HTML board elements
+            const squareList = document.querySelectorAll(".square")
+            squareList.forEach((element) => {
+                element.addEventListener("click", (e) => updateArray(e.target))
+            })
+
+            // Handle placing marker on board
+            let _changeTurn = false
+            const _logIndex = (index) => {
+                let marker
+                if (!_changeTurn) {
+                    marker = playerOne.placeMarker()
+                    _changeTurn = true
+                } else {
+                   marker = playerTwo.placeMarker()
+                    _changeTurn = false
+                }
+                _boardState[index -1] = marker
+                return marker
+            }
+
+            const updateArray = (e) => {
+                let index = parseInt(e.getAttribute("data"))
+                e.textContent = _logIndex(index)
+            }
+            return {
+                updateArray
+            }
+        }
+
     return {
-        createBoard: createBoard,
-        initalBoardState: initBoardState,
-        playerOne: Player,
-        playerTwo: Player,
+            initBoardState,
+            createBoard,
+           updateBoard,
+    }
+    })()
+    return {
+        gameState: gameBoard,
     }
 })()
 
-Game.createBoard()
 
-console.log(Game.initalBoardState)
+Game.gameState.createBoard()
+Game.gameState.updateBoard()
 
-let jimmy = Game.playerOne("jimmy")
-let john = Game.playerTwo("John")
