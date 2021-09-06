@@ -26,8 +26,11 @@ const Game = (() => {
 
     const showWin = (player) => {
         player.wins++
-        // TODO: update show win to display message on screen.
-        console.log(player)
+        const title = document.querySelector(".title-container")
+        let winnerDiv = document.createElement("div")
+        winnerDiv.textContent = `${player.name} wins!`
+        title.appendChild(winnerDiv).classList.add("winner")
+        setTimeout(() => title.removeChild(winnerDiv), 2000)
     }
 
     const winCondition = (board) => {
@@ -113,6 +116,7 @@ const Game = (() => {
             resetBtn.addEventListener("click", () => resetGame())
             const resetGame = () => {
                 boardElement.innerHTML = ""
+
                 _boardState = []
                 createBoard()
                 updateBoard()

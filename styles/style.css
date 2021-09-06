@@ -204,3 +204,17 @@ html {
 .square:hover {
     background-color: #c29927;
 }
+
+
+.winner {
+    position: fixed;
+    z-index: 3;
+    margin-top: 70px;
+    background-color: rgba(79, 78, 78, 0.2);
+    width: 200px;
+    height: 40px;
+    font-size: 1.5em;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 10px;
+}
