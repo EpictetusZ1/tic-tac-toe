@@ -2,12 +2,16 @@
 
 const Game = (() => {
     const Player = (name, marker, isTurn, wins) => {
-        // TODO: Make SVG for these bad boys
+
+
         const placeMarker = () => {
+            let svg = document.createElement("img")
             if (marker === 0) {
-                return "X"
+                svg.src = "assets/tic-tac-svg/X.svg"
+                return svg
             } else {
-                return "O"
+                svg.src = "assets/tic-tac-svg/O.svg"
+                return svg
             }
         }
         return {
@@ -71,43 +75,44 @@ const Game = (() => {
         }
 
         const updateBoard = () => {
-            // Node list targeting HTML board elements
+            // Add event listeners to all 'square' elements
             const squareList = document.querySelectorAll(".square")
-
             squareList.forEach((element) => {
-                element.addEventListener("click", (e) => updateHTML(e.target))
-                element.addEventListener("click",()  => winCondition(_boardState))
+                element.addEventListener("click", (e) => updateHTML(e))
+                // Prevent duplicate clicks
                 element.addEventListener("click", (e) => setClicked(e.target))
+                // Check for win
+                element.addEventListener("click",()  => winCondition(_boardState))
             })
 
             const setClicked = (e) => e.setAttribute("clicked", 1)
 
             // Handle turn, call update Array
-            const _handleTurn = (index) => {
+            const _handleTurn = (index, e) => {
                 if (playerOne.isTurn) {
                     playerOne.isTurn = false
                     updateArray(index, playerOne.marker)
-                    return playerOne.placeMarker()
+                    e.target.appendChild(playerOne.placeMarker())
                 } else {
                     playerOne.isTurn = true
                     updateArray(index, playerTwo.marker)
-                    return playerTwo.placeMarker()
+                    e.target.appendChild(playerTwo.placeMarker())
                 }
             }
 
             const updateArray = (index, marker) => _boardState[index -1] = marker
 
             const updateHTML = (e) => {
-                if (e.getAttribute("clicked") !== "1") {
-                    let index = parseInt(e.getAttribute("data"))
-                    e.textContent = _handleTurn(index)
+                if (e.target.getAttribute("clicked") !== "1") {
+                    let index = parseInt(e.target.getAttribute("data"))
+                    _handleTurn(index, e)
                 } else {
                     console.log("You already clicked this square")
                 }
             }
 
-            const reset = document.getElementById("restart-game")
-            reset.addEventListener("click", () => resetGame())
+            const resetBtn = document.getElementById("restart-game")
+            resetBtn.addEventListener("click", () => resetGame())
             const resetGame = () => {
                 boardElement.innerHTML = ""
                 _boardState = []
@@ -117,7 +122,7 @@ const Game = (() => {
         }
     return {
             createBoard,
-           updateBoard
+            updateBoard
     }
     })()
     return {
