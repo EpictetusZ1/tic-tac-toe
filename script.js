@@ -24,11 +24,29 @@ const Game = (() => {
     let playerOne = Player("Jack", 0, true, 0)
     let playerTwo = Player("John", 1, false,0)
 
+    const p1Name = document.getElementById("playerOne")
+    const p2Name = document.getElementById("playerTwo")
+
+    const _updateNames1 = (e, num) => {
+        e.preventDefault()
+        if (num === 0) {
+            playerOne.name = p1Name[0].value
+        } else if (num === 1) {
+            playerTwo.name = p2Name[0].value
+        }
+    }
+    // Collect names from form.
+   (() => {
+        p1Name.addEventListener("submit", (e) => _updateNames1(e, 0))
+        p2Name.addEventListener("submit", (e) => _updateNames1(e, 1))
+        return 1
+    })()
+
     const showWin = (player) => {
         player.wins++
         const title = document.querySelector(".title-container")
         let winnerDiv = document.createElement("div")
-        winnerDiv.textContent = `${player.name} wins!`
+        winnerDiv.textContent = `${player.name} Won! ${player.name} has Won: ${player.wins} times!`
         title.appendChild(winnerDiv).classList.add("winner")
         setTimeout(() => title.removeChild(winnerDiv), 2000)
     }
@@ -116,11 +134,11 @@ const Game = (() => {
             resetBtn.addEventListener("click", () => resetGame())
             const resetGame = () => {
                 boardElement.innerHTML = ""
-
                 _boardState = []
                 createBoard()
                 updateBoard()
             }
+
         }
     return {
             createBoard,
