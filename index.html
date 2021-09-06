@@ -14,13 +14,38 @@
 <div class="main">
         <div class="title-container">
             <div class="title">
-                Tic Tac Toe
+                <p class="tic">Tic</p>
+                <p class="tac">Tac</p>
+                <p class="toe">Toe</p>
             </div>
         </div>
     <div class="game-container">
         <div class="menu-container">
+            <div class="menu-title">
+                Menu
+            </div>
             <div class="menu-element">
                 <button id="restart-game">Restart Game</button>
+            </div>
+            <div class="player-card-container">
+                <div class="player-card">
+                    <form id="playerOne" action="index.html" method="get" autocomplete="off">
+                        <div id="p1-name" class="player-name">Player 1 Name:</div>
+                        <label for="name1" hidden>Name</label>
+                        <input id="name1" type="text">
+                        <input type="submit">
+                    </form>
+                </div>
+            </div>
+            <div class="player-card-container">
+                <div class="player-card">
+                    <form id="playerTwo" action="index.html" method="get" autocomplete="off">
+                        <div id="p2-name" class="player-name">Player 2 Name:</div>
+                        <label for="name2" hidden>Name</label>
+                        <input id="name2" type="text">
+                        <input type="submit">
+                    </form>
+                </div>
             </div>
         </div>
         <div class="board-container">

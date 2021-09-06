@@ -2,8 +2,6 @@
 
 const Game = (() => {
     const Player = (name, marker, isTurn, wins) => {
-
-
         const placeMarker = () => {
             let svg = document.createElement("img")
             if (marker === 0) {
@@ -19,7 +17,7 @@ const Game = (() => {
             marker,
             isTurn,
             wins,
-            placeMarker
+            placeMarker,
         }
     }
 

@@ -1,8 +1,20 @@
 @import url(reset.css);
 
+@font-face {
+    font-family: Geomanist;
+    src: url("../assets/fonts/geomanist-regular-webfont.ttf")
+}
+
+@font-face {
+    font-family: Geomanist;
+    src: url("../assets/fonts/hinted-Geomanist-Bold.ttf");
+    font-weight: bold;
+}
+
 :root {
     --red: #D3265A;
     --yellow: #F4BC28;
+    --purple: #490B3D;
 }
 
 html {
@@ -13,12 +25,12 @@ html {
 .main {
     height: 95vh;
     width: 100vw;
+    font-family: Geomanist, 'sans-serif';
 }
 
 .game-container {
     height: 100%;
     width: 100%;
-    display: inline-flex;
     flex-direction: row;
 }
 
@@ -26,32 +38,75 @@ html {
     height: 80px;
     width: 100%;
     background-color: #FFF;
+    display: flex;
+    justify-content: center;
+    align-content: center;
 }
 
 .title {
     height: 80px;
     width: 100%;
-    font-family: Consolas, 'sans-serif';
-    font-size: 2em;
-    color: #343434;
-    line-height: 80px;
+    font-family: Geomanist, 'sans-serif';
+    font-weight: bold;
+    font-size: 4em;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
     text-align: center;
+    margin-top: 10px;
+}
+
+.title p {
+    line-height: 80px;
+    margin: 0 5px;
+}
+
+.tic {
+    color: var(--purple);
+}
+
+.tac {
+    color: var(--red);
+}
+
+.toe {
+    color: var(--yellow);
+
 }
 
 .menu-container {
-    height: 80%;
+    height: 90%;
     width: 300px;
     position: fixed;
+    top: 0;
     padding-top: 10px;
     z-index: 2;
-    display: flex;
+    display: inline-flex;
+    flex-direction: column;
     background-color: #46748e;
-    border-bottom-right-radius: 35px;
+    border-bottom-right-radius: 70px;
+}
+
+.menu-title {
+    height: 50px;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    font-size: 1.8em;
+    color: #FFF;
+    font-weight: lighter;
+}
+
+.menu-element:first-of-type {
+    margin-top: 50px;
 }
 
 .menu-element {
     width: 100%;
-    height: 50px;
+    height: 45px;
     display: flex;
     justify-content: center;
 }
@@ -62,7 +117,49 @@ html {
     border-radius: 15px 15px 0 15px;
     background-color: var(--red);
     color: #FFF;
+    font-family: inherit;
+    letter-spacing: 1px;
+    text-align: center;
     font-size: 1.2em;
+    transition: all 0.2s ease-in;
+}
+
+#restart-game:hover {
+    cursor: pointer;
+    background-color: #d54771;
+}
+
+.player-card-container {
+    width: 100%;
+    height: 120px;
+    margin: 10px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+}
+
+.player-card {
+    width: 75%;
+    height: 100%;
+    background-color: #FFF;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    text-align: center;
+}
+
+.player-name {
+    width: 100%;
+    height: 20px;
+    margin: 5px 0;
+    font-size: 1.2em;
+}
+
+.player-card input {
+    width: 60%;
+    align-self: center;
 }
 
 .board-container {
@@ -71,7 +168,7 @@ html {
     padding-top: 35px;
     position: fixed;
     z-index: 1;
-    background-color: #626262;
+    background-color: #FFF;
     display: flex;
     justify-content: center;
     align-content: center;
@@ -99,6 +196,7 @@ html {
 }
 
 .square img {
+    align-self: center;
     width: 85%;
     height: 85%;
 }
