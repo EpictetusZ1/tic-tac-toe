@@ -10,6 +10,13 @@ html {
     width: 100vw;
 }
 
+.game-container {
+    height: 100%;
+    width: 100%;
+    display: inline-flex;
+    flex-direction: row;
+}
+
 .title-container {
     height: 80px;
     width: 100%;
@@ -26,14 +33,39 @@ html {
     text-align: center;
 }
 
+.menu-container {
+    height: 100%;
+    width: 300px;
+    position: fixed;
+    z-index: 2;
+    background-color: #70afad;
+}
+
+.menu-element {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+#restart-game {
+    margin-top: 10px;
+    border-radius: 5px;
+    border: none;
+    font-size: 1.2em;
+}
+
 .board-container {
     height: 100%;
     width: 100%;
+    position: fixed;
+    z-index: 1;
     background-color: #626262;
     display: flex;
     justify-content: center;
     align-content: center;
 }
+
 
 .board {
     height: 600px;
@@ -49,4 +81,11 @@ html {
     height: 100%;
     width: 100%;
     border: 2px solid black;
+    transition: all 200ms ease-in-out;
+    font-size: 12em;
+    text-align: center;
+}
+
+.square:hover {
+    background-color: #0ca96b;
 }
