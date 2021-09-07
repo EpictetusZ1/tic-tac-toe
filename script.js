@@ -42,38 +42,57 @@ const Game = (() => {
         return 1
     })()
 
-    const showWin = (player) => {
-        player.wins++
+    const showResult = (player) => {
         const title = document.querySelector(".title-container")
         let winnerDiv = document.createElement("div")
-        winnerDiv.textContent = `${player.name} Won! ${player.name} has Won: ${player.wins} times!`
-        title.appendChild(winnerDiv).classList.add("winner")
+        if (!tie) {
+            player.wins++
+            winnerDiv.textContent = `${player.name} Won! ${player.name} has Won: ${player.wins} times!`
+            title.appendChild(winnerDiv).classList.add("winner")
+        } else {
+            winnerDiv.textContent = "The game is a draw!"
+            title.appendChild(winnerDiv).classList.add("winner")
+        }
         setTimeout(() => title.removeChild(winnerDiv), 2000)
     }
 
+    let _counter = 0
+    let tie = false
+
+    const checkDraw = () => {
+        _counter++
+        if (_counter === 9) {
+            tie = true
+            return showResult(null)
+        }
+    }
+
     const winCondition = (board) => {
-        const winConditions = [
-            [0, 1, 2],
-            [3, 4, 5],
-            [6, 7, 8],
-            [0, 3, 6],
-            [1, 4, 7],
-            [2, 5, 8],
-            [0, 4, 8],
-            [2, 4, 6]
-        ]
-        for (let i = 0; i < winConditions.length; i++) {
-            let cdn = winConditions[i]
-            let c0 = cdn[0]
-            let c1 = cdn[1]
-            let c2 = cdn[2]
-            for (let x = 0; x < cdn.length; x++) {
-                if (board[c0] === 0 && board[c1] === 0 && board[c2] === 0) {
-                    return showWin(playerOne)
-                } else if (board[c0] === 1 && board[c1] === 1 && board[c2] === 1) {
-                    return showWin(playerTwo)
+        if (!tie) {
+            const winConditions = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+                [0, 4, 8],
+                [2, 4, 6]
+            ]
+            for (let i = 0; i < winConditions.length; i++) {
+                let cdn = winConditions[i]
+                let c0 = cdn[0]
+                let c1 = cdn[1]
+                let c2 = cdn[2]
+                for (let x = 0; x < cdn.length; x++) {
+                    if (board[c0] === 0 && board[c1] === 0 && board[c2] === 0) {
+                        return showResult(playerOne)
+                    } else if (board[c0] === 1 && board[c1] === 1 && board[c2] === 1) {
+                        return showResult(playerTwo)
+                    }
                 }
             }
+            checkDraw()
         }
     }
 
@@ -132,6 +151,7 @@ const Game = (() => {
 
             const resetBtn = document.getElementById("restart-game")
             resetBtn.addEventListener("click", () => resetGame())
+
             const resetGame = () => {
                 boardElement.innerHTML = ""
                 _boardState = []
