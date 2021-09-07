@@ -91,47 +91,21 @@ html {
 
 .menu-title {
     height: 50px;
-    width: 55%;
+    width: 80%;
     overflow: hidden;
     align-self: center;
     display: flex;
     justify-content: space-between;
     align-content: center;
-    font-size: 2em;
+    font-size: 3em;
     font-weight: bold;
     color: #FFF;
-    margin-top: 15px;
-}
-
-
-.menu-element {
-    width: 100%;
-    height: 45px;
-    display: flex;
-    justify-content: center;
-}
-
-#restart-game {
-    width: 60%;
-    border: none;
-    border-radius: 15px 15px 0 15px;
-    background-color: var(--red);
-    color: #FFF;
-    font-family: inherit;
-    letter-spacing: 1px;
-    text-align: center;
-    font-size: 1.2em;
-    transition: all 0.2s ease-in;
-}
-
-#restart-game:hover {
-    cursor: pointer;
-    background-color: #d54771;
+    margin: 15px 0;
 }
 
 .player-card-container {
     width: 100%;
-    height: 120px;
+    height: 150px;
     margin: 10px 0;
     display: flex;
     flex-wrap: wrap;
@@ -148,12 +122,22 @@ html {
     flex-direction: column;
     align-content: center;
     text-align: center;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.icon-container {
+    margin-top: 5px;
+    height: 50px;
+}
+
+.player-icon {
+    height: 50px;
 }
 
 .player-name {
     width: 100%;
     height: 20px;
-    margin: 5px 0;
+    margin: 5px 0 0 0 ;
     font-size: 1.2em;
 }
 
@@ -165,6 +149,36 @@ html {
 
 .player-card input[type=submit] {
     width: 40%;
+}
+
+.menu-element {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+#restart-game {
+    height: 50px;
+    width: 60%;
+    border: none;
+    border-radius: 15px 15px 0 15px;
+    background-color: var(--red);
+    color: #FFF;
+    font-family: inherit;
+    letter-spacing: 1px;
+    text-align: center;
+    font-size: 1.2em;
+    margin-top: 10px;
+    transition: all 0.2s ease-in;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 10px;
+}
+
+#restart-game:hover {
+    cursor: pointer;
+    background-color: #d54771;
+    height: 55px;
+    width: 62%;
 }
 
 .board-container {
@@ -202,7 +216,7 @@ html {
 }
 
 .clicked {
-    box-shadow: inset 0 0 5px 5px red;
+    box-shadow: inset 0 0 15px 5px red;
 }
 
 .square img {
@@ -212,7 +226,7 @@ html {
 }
 
 .square:hover {
-    background-color: #c29927;
+    background-color: #cca22e;
 }
 
 .winner {
@@ -229,7 +243,7 @@ html {
 }
 
 .play-again {
-    width: 250px;
+    width: 225px;
     height: 100px;
     margin-top: 50px;
     position: absolute;
@@ -241,10 +255,11 @@ html {
     font-size: 2em;
     border-radius: 40px;
     transition: all 0.2s ease-in-out;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .play-again:hover {
-    width: 260px;
+    width: 240px;
     height: 110px;
     font-size: 2.1em;
     line-height: 110px;
