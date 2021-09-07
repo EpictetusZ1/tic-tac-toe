@@ -1,7 +1,7 @@
 "use strict"
 
 const Game = (() => {
-    const Player = (name, marker, isTurn, wins) => {
+    const Player = (name, marker, isTurn, wins, counter) => {
         const placeMarker = () => {
             let svg = document.createElement("img")
             if (marker === 0) {
@@ -12,52 +12,64 @@ const Game = (() => {
                 return svg
             }
         }
+
+        const updateWinCounter = (player) => counter.textContent = player.wins
+
         return {
             name,
             marker,
             isTurn,
             wins,
             placeMarker,
+            updateWinCounter
         }
     }
 
-    let playerOne = Player("Player 1", 0, true, 0)
-    let playerTwo = Player("Player 2", 1, false,0)
+    const oneCount = document.getElementById("oneCount")
+    const twoCount = document.getElementById("twoCount")
+
+    let playerOne = Player("Player 1", 0, true, 0, oneCount)
+    let playerTwo = Player("Player 2", 1, false,0, twoCount)
 
     const resetPlayer = () => {
         playerOne.name = "Player 1"
         playerTwo.name = "Player 2"
         playerOne.wins = 0
         playerTwo.wins = 0
+        oneCount.textContent = "0"
+        twoCount.textContent = "0"
+        playerOne.isTurn = true
     }
 
     const p1Name = document.getElementById("playerOne")
+    const p1Content = document.getElementById("p1-name")
+
     const p2Name = document.getElementById("playerTwo")
+    const p2Content = document.getElementById("p2-name")
 
     const _updateNames1 = (e, num) => {
         e.preventDefault()
         if (num === 0) {
             playerOne.name = p1Name[0].value
+            p1Content.textContent = playerOne.name
             p1Name.reset()
         } else if (num === 1) {
             playerTwo.name = p2Name[0].value
+            p2Content.textContent = playerTwo.name
             p2Name.reset()
         }
     }
     // Collect names from form.
-   (() => {
-        p1Name.addEventListener("submit", (e) => _updateNames1(e, 0))
-        p2Name.addEventListener("submit", (e) => _updateNames1(e, 1))
-        return 1
-    })()
-
-    const boardContainer = document.querySelector(".board-container")
-    const title = document.querySelector(".title-container")
+    p1Name.addEventListener("submit", (e) => _updateNames1(e, 0), {capture: true})
+    p2Name.addEventListener("submit", (e) => _updateNames1(e, 1), {capture: true})
 
     const showResult = (player) => {
+        const boardContainer = document.querySelector(".board-container")
+        const title = document.querySelector(".title-container")
         let winnerDiv = document.createElement("div")
         if (!tie) {
             player.wins++
+            player.updateWinCounter(player)
             winnerDiv.textContent = `${player.name} Won! ${player.name} has Won: ${player.wins} times!`
             title.appendChild(winnerDiv).classList.add("winner")
             win = true
@@ -76,6 +88,7 @@ const Game = (() => {
         playAgainDiv.setAttribute("id", "play-again-btn")
         playAgainDiv.textContent = "Play Again ?"
         board.appendChild(playAgainDiv).classList.add("play-again")
+
         playAgainDiv.addEventListener("click", () => playAgain())
         playAgainDiv.addEventListener("click", () => board.removeChild(playAgainDiv))
     }
@@ -132,7 +145,6 @@ const Game = (() => {
     }
 
     const gameBoard = (() => {
-        // Creates Board in HTML
         const createBoard = () => {
             const _boardSize = 9
             const boardElement = document.getElementById("board")
@@ -158,10 +170,7 @@ const Game = (() => {
                 element.addEventListener("click", (e) => updateHTML(e))
                 // Prevent duplicate clicks
                 element.addEventListener("click", (e) => setClicked(e.target.closest("div")))
-
             })
-
-            const setClicked = (e) => e.setAttribute("clicked", 1)
 
             const updateHTML = (e) => {
                 if (!win) {
@@ -175,6 +184,7 @@ const Game = (() => {
                     }
                 }
             }
+            const setClicked = (e) => e.setAttribute("clicked", 1)
 
             // Handle turn, call update Array
             const _handleTurn = (index, e) => {
@@ -187,10 +197,12 @@ const Game = (() => {
                     playerOne.isTurn = true
                     updateArray(index, playerTwo.marker)
                     e.target.appendChild(playerTwo.placeMarker())
+                    winCondition(_boardState)
                 }
             }
 
             const updateArray = (index, marker) => _boardState[index -1] = marker
+
             const alertToClicked = (e) => {
                 let target = e.target.closest("div")
                 target.classList.add("clicked")
@@ -199,16 +211,17 @@ const Game = (() => {
 
             const boardElement = document.getElementById("board")
             const resetBtn = document.getElementById("restart-game")
+
             resetBtn.addEventListener("click", () => resetGame())
-            // Absolute Reset of the Game State
-            const resetGame = () => {
+
+            const resetGame = () => {  // Hard Reset
                 boardElement.innerHTML = ""
                 _boardState = []
                 resetPlayer()
                 createBoard()
                 updateBoard()
             }
-            const _resetPlay = () => {
+            const _resetPlay = () => {  // Soft Reset]
                 boardElement.innerHTML = ""
                 _boardState = []
                 createBoard()
@@ -228,5 +241,6 @@ const Game = (() => {
         gameState: gameBoard,
     }
 })()
+
 // Game.gameState.createBoard()
 Game.gameState.updateBoard()
