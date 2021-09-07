@@ -24,7 +24,6 @@ const Game = (() => {
     let playerOne = Player("Player 1", 0, true, 0)
     let playerTwo = Player("Player 2", 1, false,0)
 
-
     const resetPlayer = () => {
         playerOne.name = "Player 1"
         playerTwo.name = "Player 2"
@@ -61,10 +60,12 @@ const Game = (() => {
             player.wins++
             winnerDiv.textContent = `${player.name} Won! ${player.name} has Won: ${player.wins} times!`
             title.appendChild(winnerDiv).classList.add("winner")
+            win = true
             displayPlayAgain(boardContainer)
         } else {
             winnerDiv.textContent = "The game is a draw!"
             title.appendChild(winnerDiv).classList.add("winner")
+            win = true
             displayPlayAgain(boardContainer)
         }
         setTimeout(() => title.removeChild(winnerDiv), 2000)
@@ -94,7 +95,8 @@ const Game = (() => {
         _counter++
         if (_counter === 9) {
             tie = true
-            return showResult(null)
+            showResult(null)
+            return tie = false
         }
     }
 
@@ -155,12 +157,24 @@ const Game = (() => {
             squareList.forEach((element) => {
                 element.addEventListener("click", (e) => updateHTML(e))
                 // Prevent duplicate clicks
-                element.addEventListener("click", (e) => setClicked(e.target))
-                // Check for win
-                element.addEventListener("click",()  => winCondition(_boardState))
+                element.addEventListener("click", (e) => setClicked(e.target.closest("div")))
+
             })
 
             const setClicked = (e) => e.setAttribute("clicked", 1)
+
+            const updateHTML = (e) => {
+                if (!win) {
+                    // Keep track of squares that have been clicked
+                    let clicked = e.target.closest("div").getAttribute("clicked")
+                    if (clicked !== "1") {
+                        let index = parseInt(e.target.getAttribute("data"))
+                        _handleTurn(index, e)
+                    } else {
+                        alertToClicked(e)
+                    }
+                }
+            }
 
             // Handle turn, call update Array
             const _handleTurn = (index, e) => {
@@ -168,6 +182,7 @@ const Game = (() => {
                     playerOne.isTurn = false
                     updateArray(index, playerOne.marker)
                     e.target.appendChild(playerOne.placeMarker())
+                    winCondition(_boardState)
                 } else {
                     playerOne.isTurn = true
                     updateArray(index, playerTwo.marker)
@@ -176,19 +191,12 @@ const Game = (() => {
             }
 
             const updateArray = (index, marker) => _boardState[index -1] = marker
-
-            const alertToClicked = () => {
+            const alertToClicked = (e) => {
+                let target = e.target.closest("div")
+                target.classList.add("clicked")
+                setTimeout(() => target.classList.remove("clicked"), 200)
             }
 
-            const updateHTML = (e) => {
-                // Keep track of squares that have been clicked
-                if (e.target.getAttribute("clicked") !== "1") {
-                    let index = parseInt(e.target.getAttribute("data"))
-                    _handleTurn(index, e)
-                } else {
-                    console.log("You already clicked this square")
-                }
-            }
             const boardElement = document.getElementById("board")
             const resetBtn = document.getElementById("restart-game")
             resetBtn.addEventListener("click", () => resetGame())
@@ -203,8 +211,8 @@ const Game = (() => {
             const _resetPlay = () => {
                 boardElement.innerHTML = ""
                 _boardState = []
-                gameBoard.createBoard()
-                gameBoard.updateBoard()
+                createBoard()
+                updateBoard()
             }
             return {
                 _resetPlay

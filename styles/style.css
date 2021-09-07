@@ -91,15 +91,18 @@ html {
 
 .menu-title {
     height: 50px;
-    width: 100%;
+    width: 55%;
     overflow: hidden;
+    align-self: center;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-content: center;
-    font-size: 1.8em;
+    font-size: 2em;
+    font-weight: bold;
     color: #FFF;
-    font-weight: lighter;
+    margin-top: 15px;
 }
+
 
 .menu-element {
     width: 100%;
@@ -196,6 +199,10 @@ html {
     display: flex;
     justify-content: center;
     align-content: center;
+}
+
+.clicked {
+    box-shadow: inset 0 0 5px 5px red;
 }
 
 .square img {
