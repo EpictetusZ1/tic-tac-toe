@@ -121,7 +121,7 @@ html {
     flex-direction: column;
     align-content: center;
     text-align: center;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
 }
 
 .icon-container {
@@ -170,7 +170,7 @@ html {
     font-size: 1.2em;
     margin-top: 10px;
     transition: all 0.2s ease-in;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 10px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0 5px 10px;
 }
 
 #restart-game:hover {
@@ -240,7 +240,7 @@ html {
     z-index: 3;
     margin-top: 70px;
     background-color: rgba(79, 78, 78, 0.2);
-    width: 500px;
+    width: 200px;
     height: 40px;
     font-size: 1.5em;
     text-align: center;
@@ -261,7 +261,7 @@ html {
     font-size: 2em;
     border-radius: 40px;
     transition: all 0.2s ease-in-out;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
 }
 
 .play-again:hover {
