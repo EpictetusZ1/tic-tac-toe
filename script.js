@@ -31,16 +31,6 @@ const Game = (() => {
     let playerOne = Player("Player 1", 0, true, 0, oneCount)
     let playerTwo = Player("Player 2", 1, false,0, twoCount)
 
-    const resetPlayer = () => {
-        playerOne.name = "Player 1"
-        playerTwo.name = "Player 2"
-        playerOne.wins = 0
-        playerTwo.wins = 0
-        oneCount.textContent = "0"
-        twoCount.textContent = "0"
-        playerOne.isTurn = true
-    }
-
     const p1Name = document.getElementById("playerOne")
     const p1Content = document.getElementById("p1-name")
 
@@ -70,7 +60,7 @@ const Game = (() => {
         if (!tie) {
             player.wins++
             player.updateWinCounter(player)
-            winnerDiv.textContent = `${player.name} Won! ${player.name} has Won: ${player.wins} times!`
+            winnerDiv.textContent = `${player.name} Won!`
             title.appendChild(winnerDiv).classList.add("winner")
             win = true
             displayPlayAgain(boardContainer)
@@ -84,7 +74,8 @@ const Game = (() => {
     }
 
     const displayPlayAgain = (board) => {
-        const playAgainDiv = document.createElement("div")
+        let playAgainDiv = document.createElement("div")
+
         playAgainDiv.setAttribute("id", "play-again-btn")
         playAgainDiv.textContent = "Play Again ?"
         board.appendChild(playAgainDiv).classList.add("play-again")
@@ -155,10 +146,7 @@ const Game = (() => {
                 boardElement.appendChild(sqElement).classList.add("square")
                 sqElement.setAttribute("data", `${i}`)
             }
-            return {
-                initBoardState,
-                boardElement
-            }
+            return initBoardState
         }
 
         let _boardState = createBoard()
@@ -214,13 +202,8 @@ const Game = (() => {
 
             resetBtn.addEventListener("click", () => resetGame())
 
-            const resetGame = () => {  // Hard Reset
-                boardElement.innerHTML = ""
-                _boardState = []
-                resetPlayer()
-                createBoard()
-                updateBoard()
-            }
+            const resetGame = () => window.location.reload()  // Hard Reset
+
             const _resetPlay = () => {  // Soft Reset]
                 boardElement.innerHTML = ""
                 _boardState = []
@@ -233,7 +216,6 @@ const Game = (() => {
 
         }
     return {
-            createBoard,
             updateBoard
     }
     })()
@@ -242,5 +224,4 @@ const Game = (() => {
     }
 })()
 
-// Game.gameState.createBoard()
 Game.gameState.updateBoard()
